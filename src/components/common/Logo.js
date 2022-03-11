@@ -1,8 +1,9 @@
 import React from 'react'
+import logo from '../../images/icons/logo.svg'
 
 const Logo = () => {
     return (
-        <div className="font-bold text-teal-500">Logo</div>
+        <img className='h-10' src={logo} alt="logo" />
     )
 }
 
