@@ -1,0 +1,39 @@
+/* .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: white;
+    height: 31rem;
+    overflow: auto;
+    width: 95%;
+  } */
+  /* .StatusContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    margin: 20px;
+  } */
+  .image {
+    width: 10rem;
+    animation: scale 3s ease-in-out infinite;
+  }
+  
+  @keyframes scale {
+    from {
+      transform: scale(0);
+    }
+  
+    to {
+      transform: scale(1);
+    }
+  }
+  
