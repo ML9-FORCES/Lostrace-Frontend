@@ -2,54 +2,42 @@ import React, { useState, useRef, useCallback, useEffect } from "react";
 import Webcam from "react-webcam";
 
 const WebCam = () => {
+  const FACING_MODE_USER = "user";
+  const FACING_MODE_ENVIRONMENT = "environment";
+
   const webcamRef = useRef(null);
   const [image, setImage] = useState("");
-  const [camera, setCamera] = useState("back");
+  const [facingMode, setFacingMode] = useState(FACING_MODE_USER);
+  const [showMessage, setMessage] = useState(false)
+
+  const switchCamera = useCallback(() => {
+    setFacingMode(
+      prevState =>
+        prevState === FACING_MODE_USER
+          ? FACING_MODE_ENVIRONMENT
+          : FACING_MODE_USER
+    );
+  }, []);
 
   const videoConstraints = {
     width: 220,
     height: 200,
-    facingMode: camera === "back" ? "environment" : "user",
+    facingMode: facingMode,
   };
-
-  useEffect(() => {
-    const initialiseCamera = async () => await
-      navigator
-        .mediaDevices
-        .getUserMedia({ audio: false, video: true });
-
-    initialiseCamera().then((res) => {
-      console.log(res)
-    })
-    // navigator.permissions.query({ name: 'camera' })
-    //   .then((permissionObj) => {
-    //     console.log(permissionObj.state);
-    //   })
-    //   .catch((error) => {
-    //     console.log('Got error :', error);
-    //   })
-
-    // navigator.getMedia = (navigator.getUserMedia || // use the proper vendor prefix
-    //   navigator.webkitGetUserMedia ||
-    //   navigator.mozGetUserMedia ||
-    //   navigator.msGetUserMedia);
-
-    // navigator.getMedia({ video: true }, function (res) {
-    //   // webcam is available
-    //   console.log('webcam is available', res)
-    // }, function () {
-    //   // webcam is not available
-    //   console.log('webcam is unavailable')
-    // });
-  }, [])
 
   const capture = useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
     setImage(imageSrc);
   }, [webcamRef]);
 
-
-  // console.log(webcamRef);
+  useEffect(() => {
+    if (!webcamRef) {
+      setMessage(true)
+    }
+    else {
+      setMessage(false)
+    }
+  }, [webcamRef])
   return (
     <>
       <div className="flex flex-col">
@@ -67,17 +55,16 @@ const WebCam = () => {
           </div>
           {/* 255,149,42 shadow-[0px_0px_4px_2px_rgb(83 184 187)] */}
           {
-            webcamRef.current ? ''
-              :
+            showMessage ?
               <p className="p-3 text-orange-600 text-xs shadow-[0_0_0px_3px_rgba(255,149,42,0.3)] font-semibold rounded border-[1px] border-customorange">
                 No camera found, either switch the camera or check your camera settings
               </p>
+              :
+              ''
           }
           <button
             className="flex space-x-2 border-[1px] rounded-md text-xs p-1 duration-75 hover:shadow-md"
-            onClick={() => {
-              setCamera(camera === "back" ? "front" : "back");
-            }}
+            onClick={switchCamera}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
