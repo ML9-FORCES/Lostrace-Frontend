@@ -3,10 +3,10 @@ import { useState, useEffect } from 'react'
 const CheckBrowserPermission = () => {
     const [showPrompt, setPrompt] = useState(true);
 
-    function manageStates(result) {
-        if (result.state === 'prompt') {
-            setPrompt(true);
-        } else if (result.state === 'denied') {
+    function manageStates(state) {
+        if (state === 'prompt') {
+            setPrompt(false);
+        } else if (state === 'denied') {
             setPrompt(true);
         }
         else setPrompt(false)
@@ -16,8 +16,8 @@ const CheckBrowserPermission = () => {
         navigator.permissions
             .query({ name: 'camera' })
             .then((result) => {
-                manageStates(result);
-                result.onchange = () => manageStates(result)
+                manageStates(result.state);
+                // result.onchange = () => manageStates(result)
             })
     }, [])
 
