@@ -7,7 +7,7 @@ const WebCam = () => {
 
   const webcamRef = useRef(null);
   const [image, setImage] = useState("");
-  const [facingMode, setFacingMode] = useState(FACING_MODE_USER);
+  const [facingMode, setFacingMode] = useState(FACING_MODE_ENVIRONMENT);
   const [showMessage, setMessage] = useState(false)
 
   const switchCamera = useCallback(() => {
