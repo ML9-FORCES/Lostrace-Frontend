@@ -9,7 +9,7 @@ const WebCam = () => {
   const videoConstraints = {
     width: 220,
     height: 200,
-    facingMode: camera === "back" ? { exact: "environment" } : "user",
+    facingMode: camera === "back" ? "environment" : "user",
   };
 
   useEffect(() => {
