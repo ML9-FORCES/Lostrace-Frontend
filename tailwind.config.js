@@ -10,7 +10,7 @@ module.exports = {
           600: "#055052",
           700: "#003638",
         },
-        yellow: "#F3F2C9"
+        customorange: "#FF8E31"
       }
     },
   },
