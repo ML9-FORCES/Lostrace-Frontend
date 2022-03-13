@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react'
-import sendingImage from "../images/loadingpage/sendingImage.png"
-import reterving from "../images/loadingpage/reteriving.png"
-import faceRecogination from "../images/loadingpage/faceRecogination.png"
+import sendingImage from "../images/vectors/loadingpage/sendingImage.png"
+import reterving from "../images/vectors/loadingpage/reteriving.png"
+import faceRecogination from "../images/vectors/loadingpage/faceRecogination.png"
 import ProgressBar from '../components/LoadingPage/ProgressBar'
 import Status from '../components/LoadingPage/Status'
 
