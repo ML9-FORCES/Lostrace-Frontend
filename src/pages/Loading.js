@@ -4,7 +4,6 @@ import reterving from "../images/loadingpage/reteriving.png"
 import faceRecogination from "../images/loadingpage/faceRecogination.png"
 import ProgressBar from '../components/LoadingPage/ProgressBar'
 import Status from '../components/LoadingPage/Status'
-// import styles from './LoadingPage.module.css'
 
 const Loading = () => {
     const [value, updateValue] = useState(0)
@@ -49,7 +48,7 @@ const Loading = () => {
                     :
                     <div className="flex justify-center items-center flex-col bg-white w-[100%] h-[100vh]">
                         <div className="flex flex-col justify-center items-center m-2 w-[90%] max-w-xl" >
-                            <img className="w-40" src={image} alt="icon" />
+                            <img className="w-40 animate-scale" src={image} alt="icon" />
                             <Status status={step} />
                             <ProgressBar bgcolor={"#f3f2c9"} value={value} />
                         </div>

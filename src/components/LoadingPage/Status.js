@@ -1,6 +1,5 @@
 import React from 'react'
 
-// import styles from './Status.module.css'
 
 function Status({ status }) {
     return (
