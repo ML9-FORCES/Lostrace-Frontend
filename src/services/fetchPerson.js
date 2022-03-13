@@ -1,17 +1,18 @@
 import axios from "axios"
 
 const config = {
-    method: 'post',
-    url: ''
+    method: 'get',
+    url: 'http://lostrace-data-api.herokuapp.com/result'
 }
 
 export const fetchPerson = () => {
-    axios
-        .post()
-        .then(() => {
-
+    try {
+        const data = axios(config);
+        return new Promise((res, rej) => {
+            res(data)
         })
-        .catch((err) => {
-            console.log(err)
-        })
+    }
+    catch (err) {
+        console.log(err)
+    }
 }
