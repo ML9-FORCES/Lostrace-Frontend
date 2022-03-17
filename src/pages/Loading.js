@@ -1,11 +1,20 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+
+import { useLocation, useNavigate } from 'react-router-dom'
+
 import sendingImage from "../images/vectors/loadingpage/sendingImage.png"
 import reterving from "../images/vectors/loadingpage/reteriving.png"
 import faceRecogination from "../images/vectors/loadingpage/faceRecogination.png"
 import ProgressBar from '../components/LoadingPage/ProgressBar'
 import Status from '../components/LoadingPage/Status'
 
+import { fetchPerson } from '../services/fetchPerson'
+
 const Loading = () => {
+    const navigate = useNavigate();
+    const { state } = useLocation();
+    const { pic } = state;
+
     const [value, updateValue] = useState(0)
     const images = [sendingImage, reterving, faceRecogination]
 
@@ -17,6 +26,16 @@ const Loading = () => {
 
     const [step, setStep] = useState(steps[0])
     const [image, setImage] = useState(images[0])
+
+    useEffect(() => {
+        fetchPerson(pic)
+            .then((result) => {
+                navigate('/result', { state: { res: result.data } })
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }, [pic, navigate])
 
     useEffect(() => {
         const interval = setInterval(() => {
