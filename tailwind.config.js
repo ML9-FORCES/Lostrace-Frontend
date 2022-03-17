@@ -11,6 +11,15 @@ module.exports = {
           700: "#003638",
         },
         customorange: "#FF8E31"
+      },
+      animation: {
+        scale: "scale 3s ease-in-out infinite"
+      },
+      keyframes: {
+        scale: {
+          '0%': { transform: 'scale(0)' },
+          '100%': { transform: 'scale(1)' }
+        }
       }
     },
   },

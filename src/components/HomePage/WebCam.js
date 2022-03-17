@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import Webcam from "react-webcam";
 
-const WebCam = () => {
+const WebCam = ({ handleCapture }) => {
   const FACING_MODE_USER = "user";
   const FACING_MODE_ENVIRONMENT = "environment";
 
@@ -92,6 +92,19 @@ const WebCam = () => {
         >
           Capture
         </button>
+        {
+          image ?
+            <button
+              className="rounded-lg p-1 bg-teal-600 text-white duration-75 hover:bg-teal-500"
+              onClick={(e) => {
+                e.preventDefault();
+                handleCapture(image);
+              }}
+            >
+              Submit
+            </button>
+            : ''
+        }
       </div>
     </>
   );
