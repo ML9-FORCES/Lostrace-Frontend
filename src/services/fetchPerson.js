@@ -6,7 +6,7 @@ export const fetchPerson = (img) => {
     formData.append("flag", '1');
     const config = {
         method: 'post',
-        url: 'http://lostrace-data-api.herokuapp.com/result',
+        url: 'https://lostrace-data-api.herokuapp.com/result',
         data: formData
     }
 
