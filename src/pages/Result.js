@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 
 const Result = () => {
     const { state } = useLocation();
@@ -36,6 +37,9 @@ const Result = () => {
     const { name, fatherName, currentAge, gender, img, placeOfMissing, reportLink, profileLink } = result;
     return (
         <div className='container mx-auto p-2 md:p-10 flex flex-col justify-center h-[100vh]'>
+            <Helmet>
+                <title>Loading</title>
+            </Helmet>
             <div className="shadow-xl rounded-lg  justify-center p-2">
                 <h1 className=' text-center text-teal-600 text-bold text-3xl text-underline mb-4'>Person Found</h1>
                 <div className="lg:mt-8 mt-4">

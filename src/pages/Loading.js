@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-
+import { Helmet } from 'react-helmet-async'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import sendingImage from "../images/vectors/loadingpage/sendingImage.png"
@@ -8,67 +8,113 @@ import faceRecogination from "../images/vectors/loadingpage/faceRecogination.png
 import ProgressBar from '../components/LoadingPage/ProgressBar'
 import Status from '../components/LoadingPage/Status'
 
-import { fetchPerson } from '../services/fetchPerson'
+import { search } from '../services/search'
+import { updateState } from '../services/updateState'
+
+const states = {
+    0: "Fetching New Data",
+    1: "Encoding New Data",
+    2: "Updating Database State",
+    3: "Flex Searching Image",
+}
+
+const phases = {
+    200: "Success",
+    201: "Process",
+    404: "Failure",
+}
+const images = [sendingImage, reterving, faceRecogination]
+
 
 const Loading = () => {
     const navigate = useNavigate();
     const { state } = useLocation();
-    const { pic } = state;
+    const { pic, database } = state;
 
-    const [value, updateValue] = useState(0)
-    const images = [sendingImage, reterving, faceRecogination]
+    const [value, setValue] = useState(0)
+    const [image, setImage] = useState(0)
+    const [loadingState, setLoadingState] = useState(0)
 
-    const steps = [
-        'Model Loading',
-        'Retrieving images from Data API',
-        'AI Model identifying the match person',
-    ]
+    const checkPhaseAndInfo = (Phase, Info) => {
+        // success
+        if (Phase === phases[200]) {
+            navigate('/result', { state: { res: Info } })
+        }
 
-    const [step, setStep] = useState(steps[0])
-    const [image, setImage] = useState(images[0])
+        //failure
+        else if (Phase === phases[404]) {
+            navigate('/', { state: { errorMsg: Info } })
+        }
 
-    useEffect(() => {
-        fetchPerson(pic)
-            .then((result) => {
-                navigate('/result', { state: { res: result.data } })
-            })
-            .catch((err) => {
-                console.log(err)
-            })
-    }, [pic, navigate])
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            updateValue(oldValue => {
-                const newValue = oldValue + 10;
-                if (newValue === 100) {
-                    clearInterval(interval)
-                }
-                return newValue
-            })
-        }, 900)
-
-        let i = 0;
-        const imageInterval = setInterval(() => {
-            i = i + 1;
-            if (steps.length === i) {
-                clearInterval(imageInterval)
-                return 1
+        //processing
+        else {
+            if (Info === states[0]) {
+                setLoadingState(0)
             }
-            setStep(steps[i], setImage(images[i]))
-        }, 3000)
-    }, []);
+            else if (Info === states[1]) {
+                setLoadingState(1)
+            }
+            else if (Info === states[2]) {
+                setLoadingState(2)
+            }
+            else {
+                setLoadingState(3)
+            }
+        }
+    }
+
+    useEffect(() => {
+        setImage((prevState) => {
+            return prevState + 1;
+        })
+    }, [loadingState])
+
+    useEffect(() => {
+        setValue((prevState) => {
+            return prevState + 25;
+        })
+    }, [image])
+
+    useEffect(() => {
+        let interval;
+        search(pic, database)
+            .then((res) => {
+                const taskLink = res.data.Task
+                console.log(taskLink)
+                return taskLink;
+            })
+            .then((taskLink) => {
+                console.log(taskLink)
+                interval = setInterval(() => {
+                    updateState(taskLink)
+                        .then((result) => {
+                            const Phase = result.data.Phase;
+                            const Info = result.data.Info;
+                            checkPhaseAndInfo(Phase, Info)
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        })
+                }, 1000)
+            })
+        return () => {
+            clearInterval(interval);
+        }
+    }, [pic, database, navigate])
 
     return (
         <>
+            <Helmet>
+                <title>Loading</title>
+            </Helmet>
             {
                 value === 100 ?
                     ''
                     :
                     <div className="flex justify-center items-center flex-col bg-white w-[100%] h-[100vh]">
                         <div className="flex flex-col justify-center items-center m-2 w-[90%] max-w-xl" >
-                            <img className="w-40 animate-scale" src={image} alt="icon" />
-                            <Status status={step} />
+                            <img className="w-40 animate-scale" src={images[image]} alt="icon" />
+                            <Status status={states[loadingState]} />
                             <ProgressBar bgcolor={"#f3f2c9"} value={value} />
                         </div>
                     </div>

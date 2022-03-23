@@ -1,15 +1,14 @@
 import axios from "axios"
 
-export const fetchPerson = (img) => {
+export const search = (img, database) => {
     const formData = new FormData();
-    formData.append("img", img);
-    formData.append("flag", '1');
+    formData.append("Image", img);
+    formData.append("Mode", database);
     const config = {
         method: 'post',
-        url: 'http://lostrace-data-api.herokuapp.com/result',
+        url: 'https://lostrace-data-api.herokuapp.com/search',
         data: formData
     }
-
     try {
         const data = axios(config);
         return new Promise((res, rej) => {

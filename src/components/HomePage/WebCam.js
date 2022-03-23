@@ -38,11 +38,18 @@ const WebCam = ({ handleCapture }) => {
       setMessage(false)
     }
   }, [webcamRef])
+
+  useEffect(() => {
+    if (image) {
+      handleCapture(image)
+    }
+  }, [image, handleCapture])
+
   return (
     <>
       <div className="flex flex-col">
         <div className="flex flex-col space-y-3 justify-center items-center p-3">
-          <div className="flex space-x-3">
+          <div className="flex flex-wrap items-center justify-center space-y-3 md:space-x-3">
             <Webcam
               audio={false}
               height={200}
@@ -92,19 +99,6 @@ const WebCam = ({ handleCapture }) => {
         >
           Capture
         </button>
-        {
-          image ?
-            <button
-              className="rounded-lg p-1 bg-teal-600 text-white duration-75 hover:bg-teal-500"
-              onClick={(e) => {
-                e.preventDefault();
-                handleCapture(image);
-              }}
-            >
-              Submit
-            </button>
-            : ''
-        }
       </div>
     </>
   );
