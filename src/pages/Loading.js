@@ -49,14 +49,17 @@ const Loading = () => {
 
         //processing
         else {
-            if (Info === states[1]) {
-                setLoadingState(1)
+            if (Info === states[0]) {
+                setLoadingState(0);
+            }
+            else if (Info === states[1]) {
+                setLoadingState(1);
             }
             else if (Info === states[2]) {
-                setLoadingState(2)
+                setLoadingState(2);
             }
-            else {
-                setLoadingState(3)
+            else if (Info === states[3]) {
+                setLoadingState(3);
             }
         }
     }
@@ -94,16 +97,34 @@ const Loading = () => {
     }, [state, navigate])
 
     useEffect(() => {
-        setImage((prevState) => {
-            return prevState + 1;
-        })
+        switch (loadingState) {
+            case 0: setImage(0);
+                break;
+            case 1: setImage(1);
+                break;
+            case 2: setImage(2);
+                break;
+            case 3: setImage(3);
+                break;
+            default:
+                setImage(0);
+        }
     }, [loadingState])
 
     useEffect(() => {
-        setValue((prevState) => {
-            return prevState + 25;
-        })
-    }, [image])
+        switch (loadingState) {
+            case 0: setValue(25);
+                break;
+            case 1: setValue(50);
+                break;
+            case 2: setValue(75);
+                break;
+            case 3: setValue(99);
+                break;
+            default:
+                setValue(99);
+        }
+    }, [loadingState])
 
 
     return (
