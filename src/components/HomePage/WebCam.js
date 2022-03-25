@@ -49,7 +49,7 @@ const WebCam = ({ handleCapture }) => {
     <>
       <div className="flex flex-col">
         <div className="flex flex-col space-y-3 justify-center items-center p-3">
-          <div className="flex flex-wrap items-center justify-center space-y-3 md:space-x-3">
+          <div className="flex flex-col md:flex-row items-center justify-center space-y-3 space-x-0 md:space-x-3 md:space-y-0">
             <Webcam
               audio={false}
               height={200}

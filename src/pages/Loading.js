@@ -5,6 +5,8 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import sendingImage from "../images/vectors/loadingpage/sendingImage.png"
 import reterving from "../images/vectors/loadingpage/reteriving.png"
 import faceRecogination from "../images/vectors/loadingpage/faceRecogination.png"
+import flexSearch from "../images/vectors/loadingpage/flexSearch.png"
+
 import ProgressBar from '../components/LoadingPage/ProgressBar'
 import Status from '../components/LoadingPage/Status'
 
@@ -23,13 +25,12 @@ const phases = {
     201: "Process",
     404: "Failure",
 }
-const images = [sendingImage, reterving, faceRecogination]
+const images = [sendingImage, reterving, faceRecogination, flexSearch]
 
 
 const Loading = () => {
     const navigate = useNavigate();
-    const { state } = useLocation();
-    const { pic, database } = state;
+    let { state, pathname } = useLocation();
 
     const [value, setValue] = useState(0)
     const [image, setImage] = useState(0)
@@ -38,12 +39,12 @@ const Loading = () => {
     const checkPhaseAndInfo = (Phase, Info) => {
         // success
         if (Phase === phases[200]) {
-            navigate('/result', { state: { res: Info } })
+            navigate('/result', { state: { res: Info }, replace: true })
         }
 
         //failure
         else if (Phase === phases[404]) {
-            navigate('/', { state: { errorMsg: Info } })
+            navigate('/', { state: { errorMsg: Info }, replace: true })
         }
 
         //processing
@@ -64,6 +65,38 @@ const Loading = () => {
     }
 
     useEffect(() => {
+        if (!state) {
+            navigate('/', { replace: true })
+        }
+
+        else {
+            let interval;
+            search(state.pic, state.database)
+                .then((res) => {
+                    const taskLink = res.data.Task
+                    console.log(taskLink)
+                    return taskLink;
+                })
+                .then((taskLink) => {
+                    interval = setInterval(() => {
+                        updateState(taskLink)
+                            .then((result) => {
+                                const Phase = result.data.Phase;
+                                const Info = result.data.Info;
+                                checkPhaseAndInfo(Phase, Info)
+                            })
+                            .catch((err) => {
+                                console.log(err)
+                            })
+                    }, 1000)
+                })
+            return () => {
+                clearInterval(interval);
+            }
+        }
+    }, [state, navigate])
+
+    useEffect(() => {
         setImage((prevState) => {
             return prevState + 1;
         })
@@ -75,32 +108,6 @@ const Loading = () => {
         })
     }, [image])
 
-    useEffect(() => {
-        let interval;
-        search(pic, database)
-            .then((res) => {
-                const taskLink = res.data.Task
-                console.log(taskLink)
-                return taskLink;
-            })
-            .then((taskLink) => {
-                console.log(taskLink)
-                interval = setInterval(() => {
-                    updateState(taskLink)
-                        .then((result) => {
-                            const Phase = result.data.Phase;
-                            const Info = result.data.Info;
-                            checkPhaseAndInfo(Phase, Info)
-                        })
-                        .catch((err) => {
-                            console.log(err)
-                        })
-                }, 1000)
-            })
-        return () => {
-            clearInterval(interval);
-        }
-    }, [pic, database, navigate])
 
     return (
         <>
@@ -115,7 +122,7 @@ const Loading = () => {
                         <div className="flex flex-col justify-center items-center m-2 w-[90%] max-w-xl" >
                             <img className="w-40 animate-scale" src={images[image]} alt="icon" />
                             <Status status={states[loadingState]} />
-                            <ProgressBar bgcolor={"#f3f2c9"} value={value} />
+                            <ProgressBar bgcolor={"#fff5be"} value={value} />
                         </div>
                     </div>
             }

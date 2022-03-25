@@ -5,7 +5,7 @@ const TopBar = ({ database, handleDatabase }) => {
     return (
         <div className='flex justify-between items-center border-none shadow-md p-2'>
             <Logo />
-            <label className='relative flex items-center justify-center' htmlFor="toggleDatabase">
+            <label className='relative flex' htmlFor="toggleDatabase">
                 <p className='text-teal-700 text-sm underline'>Database: </p>
                 <div className='flex space-x-2 items-center justify-center'>
                     <input className='absolute left-[-9999px] top-[-9999px] checked:' onChange={() => { handleDatabase(database === 0 ? 1 : 0) }} type="checkbox" name="toggleDatabase" id="toggleDatabase" />

@@ -14,10 +14,6 @@ import { dataURItoBlob } from '../utilities/dataURItoBlob'
 const Home = () => {
     let { state } = useLocation();
 
-    useEffect(() => {
-        console.log(state)
-    }, [state])
-
     const navigate = useNavigate();
     const showPrompt = CheckBrowserPermission();
 
@@ -36,7 +32,7 @@ const Home = () => {
     }
 
     return (
-        <div className='flex flex-col w-full h-screen'>
+        <div className='flex flex-col w-full relative h-screen'>
             <Helmet>
                 <title>Lostrace | Home</title>
             </Helmet>
@@ -45,7 +41,7 @@ const Home = () => {
                 state ? <Modal error={state.errorMsg} state={state} /> : ''
             }
             {/* <Modal error={'Face not found'} /> */}
-            <div className='flex flex-col items-center h-screen py-12 space-y-12'>
+            <div className='flex flex-col items-center py-24 space-y-12'>
                 <label className='relative' htmlFor="toggle">
                     <input className='absolute left-[-9999px] top-[-9999px] checked:' onChange={() => { setToggle(toggled === "camera" ? "upload" : "camera") }} type="checkbox" name="toggle" id="toggle" />
                     <Slider toggled={toggled} />
@@ -75,9 +71,9 @@ const Home = () => {
                 }
                 {
                     selectedImageFile ? <button
-                        className="rounded-lg p-1 bg-teal-600 text-white duration-75 hover:bg-teal-500"
+                        className="rounded p-2 bg-teal-600 text-white duration-75 hover:bg-teal-500"
                         onClick={(e) => {
-                            // e.preventDefault();
+                            e.preventDefault();
                             navigate('/loading', { state: { pic: selectedImageFile, database: database } });
                         }}
                     >
