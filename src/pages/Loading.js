@@ -30,7 +30,7 @@ const images = [sendingImage, reterving, faceRecogination, flexSearch]
 
 const Loading = () => {
     const navigate = useNavigate();
-    let { state, pathname } = useLocation();
+    let { state } = useLocation();
 
     const [value, setValue] = useState(0)
     const [image, setImage] = useState(0)
@@ -49,10 +49,7 @@ const Loading = () => {
 
         //processing
         else {
-            if (Info === states[0]) {
-                setLoadingState(0)
-            }
-            else if (Info === states[1]) {
+            if (Info === states[1]) {
                 setLoadingState(1)
             }
             else if (Info === states[2]) {
@@ -114,18 +111,14 @@ const Loading = () => {
             <Helmet>
                 <title>Loading</title>
             </Helmet>
-            {
-                value === 100 ?
-                    ''
-                    :
-                    <div className="flex justify-center items-center flex-col bg-white w-[100%] h-[100vh]">
-                        <div className="flex flex-col justify-center items-center m-2 w-[90%] max-w-xl" >
-                            <img className="w-40 animate-scale" src={images[image]} alt="icon" />
-                            <Status status={states[loadingState]} />
-                            <ProgressBar bgcolor={"#fff5be"} value={value} />
-                        </div>
-                    </div>
-            }
+            <div className="flex justify-center items-center flex-col bg-white w-[100%] h-[100vh]">
+                <div className="flex flex-col justify-center items-center m-2 w-[90%] max-w-xl" >
+                    <img className="w-40 animate-scale" src={images[image]} alt="icon" />
+                    <Status status={states[loadingState]} />
+                    <ProgressBar bgcolor={"#fff5be"} value={value} />
+                </div>
+            </div>
+
         </>
     )
 }
