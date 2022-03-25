@@ -115,7 +115,7 @@ const Loading = () => {
                 <div className="flex flex-col justify-center items-center m-2 w-[90%] max-w-xl" >
                     <img className="w-40 animate-scale" src={images[image]} alt="icon" />
                     <Status status={states[loadingState]} />
-                    <ProgressBar bgcolor={"#fff5be"} value={value} />
+                    <ProgressBar bgcolor={"#fff5be"} value={value <= 100 ? value : 100} />
                 </div>
             </div>
 
